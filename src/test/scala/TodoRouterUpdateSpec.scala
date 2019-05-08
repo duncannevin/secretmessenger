@@ -2,6 +2,7 @@ import java.util.UUID
 
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.testkit.ScalatestRouteTest
+import com.gitub.duncannevin.secretmessenger.{InMemoryTodoRepository, Todo, router, UpdateTodo}
 import org.scalatest.{Matchers, WordSpec}
 
 class TodoRouterUpdateSpec extends WordSpec with Matchers with ScalatestRouteTest with TodoMocks {
@@ -22,11 +23,11 @@ class TodoRouterUpdateSpec extends WordSpec with Matchers with ScalatestRouteTes
     Some(true)
   )
 
-  "A TodoRouter" should {
+  "A com.gitub.duncannevin.secretmessenger.router" should {
 
     "update a todo with valid data" in {
       val repository = new InMemoryTodoRepository(Seq(testTodo))
-      val router = new TodoRouter(repository)
+      val router = new router(repository)
 
       Put(s"/todos/$todoId", testUpdateTodo) ~> router.route ~> check {
         status shouldBe StatusCodes.OK
@@ -38,7 +39,7 @@ class TodoRouterUpdateSpec extends WordSpec with Matchers with ScalatestRouteTes
     }
     "return not found with non existent todo" in {
       val repository = new InMemoryTodoRepository(Seq(testTodo))
-      val router = new TodoRouter(repository)
+      val router = new router(repository)
 
       Put(s"/todos/1", testUpdateTodo) ~> router.route ~> check {
         status shouldBe ApiError.todoNotFound("1").statusCode
@@ -48,7 +49,7 @@ class TodoRouterUpdateSpec extends WordSpec with Matchers with ScalatestRouteTes
     }
     "not update a todo with invalid data" in {
       val repository = new InMemoryTodoRepository(Seq(testTodo))
-      val router = new TodoRouter(repository)
+      val router = new router(repository)
 
       Put(s"/todos/$todoId", testUpdateTodo.copy(title = Some(""))) ~> router.route ~> check {
         status shouldBe ApiError.emptyTitleField.statusCode
@@ -58,7 +59,7 @@ class TodoRouterUpdateSpec extends WordSpec with Matchers with ScalatestRouteTes
     }
     "handle repository failures when updating todos" in {
       val repository = new FailingRepository
-      val router = new TodoRouter(repository)
+      val router = new router(repository)
 
       Put(s"/todos/$todoId", testUpdateTodo) ~> router.route ~> check {
         status shouldBe ApiError.generic.statusCode

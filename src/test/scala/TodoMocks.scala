@@ -1,3 +1,5 @@
+import com.gitub.duncannevin.secretmessenger.{CreateTodo, Todo, TodoRepository, UpdateTodo}
+
 import scala.concurrent.Future
 trait TodoMocks {
   class FailingRepository extends TodoRepository {

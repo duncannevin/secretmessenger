@@ -1,3 +1,5 @@
+package com.gitub.duncannevin.secretmessenger.codes
+
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 
 final case class ApiError private(statusCode: StatusCode, message: String)

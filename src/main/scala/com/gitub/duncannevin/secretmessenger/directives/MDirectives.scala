@@ -1,12 +1,12 @@
+package com.gitub.duncannevin.secretmessenger.directives
+
 import akka.http.scaladsl.server.{Directive1, Directives}
+import com.gitub.duncannevin.secretmessenger.codes.ApiError
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-trait TodoDirectives extends Directives {
-
-  import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
-  import io.circe.generic.auto._
+trait MDirectives extends Directives {
 
   def handle[T](f: Future[T])(e: Throwable => ApiError): Directive1[T] = onComplete(f) flatMap {
     case Success(t) => provide(t)

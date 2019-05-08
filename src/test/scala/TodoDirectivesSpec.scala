@@ -1,11 +1,12 @@
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives
 import akka.http.scaladsl.testkit.ScalatestRouteTest
+import com.gitub.duncannevin.secretmessenger.directives.MDirectives
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.concurrent.Future
 
-class TodoDirectivesSpec extends WordSpec with Matchers with ScalatestRouteTest with Directives with TodoDirectives {
+class TodoDirectivesSpec extends WordSpec with Matchers with ScalatestRouteTest with Directives with MDirectives {
 
   import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
   import io.circe.generic.auto._
@@ -26,7 +27,7 @@ class TodoDirectivesSpec extends WordSpec with Matchers with ScalatestRouteTest 
     }
   }
 
-  "TodoDirectives" should {
+  "com.gitub.duncannevin.secretmessenger.TodoDirectives" should {
     "not return an error if the future succeeds" in {
       Get("/test/success") ~> testRoute ~> check {
         status shouldBe StatusCodes.OK
